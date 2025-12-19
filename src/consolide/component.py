@@ -12,13 +12,10 @@ class ConsolideComponent(ABC):
     """This class is the base for all components"""
 
     @abstractmethod
-    def render(self):
-        raise ConsolideNotImplemented("render method not implemented")
+    def render(self) -> str: ...
     
     @abstractmethod
-    def update(self):
-        raise ConsolideNotImplemented("update method not implemented")
+    def update(self) -> None: ...
     
     @abstractmethod
-    def destroy(self):
-        raise ConsolideNotImplemented("destroy method not implemented")
+    def destroy(self) -> None: ...
