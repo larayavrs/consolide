@@ -10,7 +10,7 @@ from typing import Optional
 
 from consolide.component import ConsolideComponent
 from consolide.exceptions import ConsolideError
-from consolide.terminal import TerminalManager
+from consolide.terminal import Terminal
 
 class ConsolideApp:
     """
@@ -21,11 +21,11 @@ class ConsolideApp:
         root : ConsolideComponent
             The root component of the application.
     """
-    def __init__(self, root: ConsolideComponent) -> None:
-        self.root = root
+    def __init__(self, root: type[ConsolideComponent]) -> None:
+        self.terminal = Terminal()
+        self.root = root(self.terminal)
         self.running: bool = False
-        self.__dirty: bool = True # this need to be redraw
-        self.terminal = TerminalManager()
+        self.__dirty: bool = True
         if hasattr(self.root, "terminal"):
             self.root.terminal = self.terminal
 
