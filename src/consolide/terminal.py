@@ -11,7 +11,7 @@ import sys
 
 from consolide.exceptions import ConsolideUncompatibleTerminal
 
-class TerminalManager:
+class Terminal:
     """This class handles terminal operations in a safe and unified way"""
 
     def __init__(self) -> None:
