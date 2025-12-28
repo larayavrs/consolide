@@ -10,6 +10,7 @@ from typing import Optional
 
 from consolide.component import ConsolideComponent
 from consolide.exceptions import ConsolideError
+from consolide.terminal import TerminalManager
 
 class ConsolideApp:
     """
@@ -24,11 +25,15 @@ class ConsolideApp:
         self.root = root
         self.running: bool = False
         self.__dirty: bool = True # this need to be redraw
+        self.terminal = TerminalManager()
+        if hasattr(self.root, "terminal"):
+            self.root.terminal = self.terminal
 
     def run(self) -> None:
         """Starts the application loop."""
         self.running = True
         try:
+            self.terminal.clear()
             self.render()
             while self.running:
                 self.update()
@@ -40,7 +45,9 @@ class ConsolideApp:
         except KeyboardInterrupt:
             self.stop()
         except Exception as exc:
-            raise ConsolideError("Unhandled exception from the application") from exc
+            raise ConsolideError(
+                "Unhandled exception from the application"
+            ) from exc
         finally:
             self.destroy()
     
