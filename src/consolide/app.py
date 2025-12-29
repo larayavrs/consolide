@@ -61,7 +61,10 @@ class ConsolideApp:
     
     def render(self) -> None:
         """Renders the application state."""
-        self.root.render()
+        self.terminal.clear()
+        output = self.root.render()
+        if output:
+            self.terminal.writeln(output)
 
     def update(self) -> None:
         """Updates the application state."""

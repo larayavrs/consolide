@@ -37,9 +37,16 @@ class Container(ConsolideComponent):
         """
         self.children.append(component)
     
-    def render(self) -> None:
+    def render(self) -> str:
+        rendered = []
         for child in self.children:
-            child.render()
+            out = child.render()
+            if not isinstance(out, str):
+                raise TypeError(
+                    f"{child.__class__.__name__}.render() must return a string, not {type(out)}"
+                )
+            rendered.append(out)
+        return "\n".join(rendered)
     
     def update(self) -> None:
         for child in self.children:

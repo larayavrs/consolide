@@ -27,7 +27,7 @@ class Label(ConsolideComponent):
         self.align = align
     
     def render(self) -> None:
-        self.terminal.write(self.text)
+        return self.text
     
     def update(self) -> None:
         pass
