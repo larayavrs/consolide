@@ -9,4 +9,42 @@ from typing import Iterable, List
 from consolide.component import ConsolideComponent
 
 class Container(ConsolideComponent):
-    pass
+    """
+    A component that renders its children sequentially.
+
+    Attributes
+    ----------
+    children : Iterable[ConsolideComponent]
+        The children of the container component
+    """
+    
+    def __init__(
+        self,
+        terminal,
+        children: Iterable[ConsolideComponent] | None = None
+    ) -> None:
+        super().__init__(terminal)
+        self.children: List[ConsolideComponent] = list(children or [])
+    
+    def add(self, component: ConsolideComponent) -> None:
+        """
+        Adds a child component to the container.
+
+        Parameters
+        ----------
+        component : ConsolideComponent
+            The component to add
+        """
+        self.children.append(component)
+    
+    def render(self) -> None:
+        for child in self.children:
+            child.render()
+    
+    def update(self) -> None:
+        for child in self.children:
+            child.update()
+    
+    def destroy(self) -> None:
+        for child in self.children:
+            child.destroy()
