@@ -18,8 +18,8 @@ class ConsolideApp:
 
     Attributes
     ===========
-        root : ConsolideComponent
-            The root component of the application.
+    root : ConsolideComponent
+        The root component of the application.
     """
     def __init__(self, root: type[ConsolideComponent]) -> None:
         self.terminal = Terminal()
@@ -34,10 +34,10 @@ class ConsolideApp:
         self.running = True
         try:
             self.terminal.clear()
-            self.render()
             while self.running:
                 self.update()
                 if self.__dirty:
+                    self.terminal.clear()
                     self.render()
                     self.__dirty = False                    
                 # NOTE with this we can prevent the CPU hogging
