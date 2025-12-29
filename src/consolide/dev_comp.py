@@ -1,11 +1,16 @@
 from consolide.component import ConsolideComponent
+from consolide.label import Label
 
 class DevComponent(ConsolideComponent):
-    def render(self) -> None:
-        self.terminal.write("Rendering DevComponent")
+    def __init__(self, terminal):
+        super().__init__(terminal)
+        self.label = Label(terminal, "Hello, from consolide!")
 
-    def update(self) -> None:
+    def render(self):
+        self.label.render()
+    
+    def update(self):
         pass
-
-    def destroy(self) -> None:
-        self.terminal.write("Destroying DevComponent")
+    
+    def destroy(self):
+        pass
