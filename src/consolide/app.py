@@ -6,11 +6,11 @@ This module contains the application loop for Consolide.
 """
 
 import time
-from typing import Optional
 
 from consolide.component import ConsolideComponent
 from consolide.exceptions import ConsolideError
 from consolide.terminal import Terminal
+from consolide.rendering import RenderContext
 
 class ConsolideApp:
     """
@@ -61,10 +61,15 @@ class ConsolideApp:
     
     def render(self) -> None:
         """Renders the application state."""
+        width, height = self.terminal.size()
+        ctx = RenderContext(width, height)
+        output = self.root.render(ctx)
+        if not isinstance(output, str):
+            raise ConsolideError(
+                f"{self.root.__class__.__name__}.render() must return str"
+            )
         self.terminal.clear()
-        output = self.root.render()
-        if output:
-            self.terminal.writeln(output)
+        self.terminal.write(output)
 
     def update(self) -> None:
         """Updates the application state."""
