@@ -6,7 +6,9 @@ A container that groups multiple components.
 """
 
 from typing import Iterable, List
+
 from consolide.component import ConsolideComponent
+from consolide.rendering import RenderContext
 
 class Container(ConsolideComponent):
     """
@@ -37,15 +39,17 @@ class Container(ConsolideComponent):
         """
         self.children.append(component)
     
-    def render(self) -> str:
+    def render(self, ctx: RenderContext) -> str:
         rendered = []
+        remaining = ctx.height
         for child in self.children:
-            out = child.render()
-            if not isinstance(out, str):
-                raise TypeError(
-                    f"{child.__class__.__name__}.render() must return a string, not {type(out)}"
-                )
-            rendered.append(out)
+            if remaining <= 0:
+                break
+            child_ctx = RenderContext(ctx.width, remaining)
+            output = child.render(child_ctx)
+            lines = output.splitlines()
+            remaining -= len(lines)
+            rendered.append(output)
         return "\n".join(rendered)
     
     def update(self) -> None:

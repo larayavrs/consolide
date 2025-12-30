@@ -1,23 +1,22 @@
 from consolide.component import ConsolideComponent
+from consolide.rendering import RenderContext
+
 from consolide.label import Label
-from consolide.container import Container
+from consolide.box import Box
 
 class DevComponent(ConsolideComponent):
     def __init__(self, terminal):
         super().__init__(terminal)
-        self.root = Container(
+        self.root = Box(
             terminal,
-            children=[
-                Label(terminal, "Consolide Dev Component"),
-                Label(terminal, "This is a dev component hello world"),
-                Label(terminal, "Another line :D"),
-            ],
+            Label(terminal, "Dev Component", align="center"),
+            title="Demo"
         )
 
-    def render(self):
-        self.root.render()
+    def render(self, ctx: RenderContext) -> str:
+        return self.root.render(ctx)
 
-    def update(self):        
+    def update(self):
         pass
     
     def destroy(self):

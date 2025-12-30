@@ -6,7 +6,11 @@ The Component module contains the base class for all components.
 """
 
 from abc import ABC, abstractmethod
+
 from consolide.terminal import Terminal
+from consolide.rendering import RenderContext
+
+from consolide.exceptions import ConsolideNotImplemented
 
 class ConsolideComponent(ABC):
     """This class is the base for all components"""
@@ -15,13 +19,13 @@ class ConsolideComponent(ABC):
         self.terminal = terminal
 
     @abstractmethod
-    def render(self) -> None:
-        pass
+    def render(self, ctx: RenderContext) -> str:
+        raise ConsolideNotImplemented
     
     @abstractmethod
     def update(self) -> None:
-        pass
+        raise ConsolideNotImplemented
     
     @abstractmethod
     def destroy(self) -> None:
-        pass
+        raise ConsolideNotImplemented
