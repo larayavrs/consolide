@@ -29,9 +29,15 @@ class Label(ConsolideComponent):
         self.align = align
     
     def render(self, ctx: RenderContext) -> None:
+        if ctx.width <= 0 or ctx.height <= 0:
+            return ""
         lines = self.text.splitlines()
-        clipped = lines[:ctx.height]
-        return "\n".join(line[:ctx.width] for line in clipped)
+        rendered = []
+        for i in range(min(ctx.height, len(lines))):
+            rendered.append(
+                lines[i][:ctx.width].ljust(ctx.width)
+            )
+        return "\n".join(rendered)
     
     def update(self) -> None:
         pass
