@@ -28,7 +28,7 @@ class Label(ConsolideComponent):
         self.text = text
         self.align = align
     
-    def render(self, ctx: RenderContext) -> None:
+    def render(self, ctx: RenderContext) -> str:
         if ctx.width <= 0 or ctx.height <= 0:
             return ""
         lines = self.text.splitlines()
