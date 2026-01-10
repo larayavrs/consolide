@@ -1,8 +1,7 @@
 from consolide.app import ConsolideApp
 
-from consolide.label import Label
-from consolide.align import Align
-from consolide.padding import Padding
+from consolide.components import Label
+from consolide.layouts import Align, Padding
 
 def main():
     def root(terminal):

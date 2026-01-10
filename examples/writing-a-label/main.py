@@ -1,5 +1,5 @@
 from consolide.app import ConsolideApp
-from consolide.label import Label
+from consolide.components import Label
 
 def main():
     app = ConsolideApp(

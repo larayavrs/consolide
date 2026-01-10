@@ -1,9 +1,7 @@
 from consolide.app import ConsolideApp
 
-from consolide.box import Box
-from consolide.column import Column
-from consolide.label import Label
-from consolide.spacer import Spacer
+from consolide.layouts import Box, Column, Spacer
+from consolide.components import Label
 
 
 def main() -> None:

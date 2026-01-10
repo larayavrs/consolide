@@ -1,9 +1,8 @@
 from consolide.component import ConsolideComponent
 from consolide.rendering import RenderContext
 
-from consolide.row import Row
-from consolide.label import Label
-from consolide.box import Box
+from consolide.layouts import Row, Box
+from consolide.components import Label
 
 class DevComponent(ConsolideComponent):
     def __init__(self, terminal):

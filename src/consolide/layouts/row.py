@@ -37,24 +37,54 @@ class Row(MultiChildComponent):
             return ""
         
         usable_width = ctx.width - total_gap
-        child_width = usable_width // count
+
+        # Compute per-child weights (defaulting to 1 when not present).
+        weights: list[int] = []
+        for child in self.children:
+            w = getattr(child, "weight", 1)
+            try:
+                w_int = int(w)
+            except (TypeError, ValueError):
+                w_int = 1
+            if w_int <= 0:
+                w_int = 1
+            weights.append(w_int)
+
+        total_weight = sum(weights) or count
+
+        # Allocate widths proportionally, taking care with rounding.
+        remaining_width = usable_width
+        remaining_weight = total_weight
+        child_widths: list[int] = []
+
+        for w in weights:
+            if remaining_weight <= 0 or remaining_width <= 0:
+                part = 0
+            else:
+                part = remaining_width * w // remaining_weight
+            child_widths.append(part)
+            remaining_width -= part
+            remaining_weight -= w
 
         child_ctxs = [
-            RenderContext(child_width, ctx.height)
-            for _ in self.children
+            RenderContext(max(width, 0), ctx.height)
+            for width in child_widths
         ]
 
         rendered = [
-            child.render(child_ctx).splitlines()
+            (child.render(child_ctx).splitlines(), child_ctx.width)
             for child, child_ctx in zip(self.children, child_ctxs)
         ]
 
         lines = []
         for row in range(ctx.height):
             line_parts = []
-            for block in rendered:
+            for block, width in rendered:
+                if width <= 0:
+                    line_parts.append("")
+                    continue
                 line = block[row] if row < len(block) else ""
-                line_parts.append(line.ljust(child_width))
+                line_parts.append(line.ljust(width))
             lines.append((" " * self.gap).join(line_parts))
         
         return "\n".join(lines)

@@ -73,11 +73,38 @@ class Column(MultiChildComponent):
             return ""
 
         usable_height = ctx.height - total_gap
-        child_height = usable_height // count
+
+        # Compute per-child weights (defaulting to 1 when not present).
+        weights: list[int] = []
+        for child in self.children:
+            w = getattr(child, "weight", 1)
+            try:
+                w_int = int(w)
+            except (TypeError, ValueError):
+                w_int = 1
+            if w_int <= 0:
+                w_int = 1
+            weights.append(w_int)
+
+        total_weight = sum(weights) or count
+
+        # Allocate heights proportionally.
+        remaining_height = usable_height
+        remaining_weight = total_weight
+        child_heights: list[int] = []
+
+        for w in weights:
+            if remaining_weight <= 0 or remaining_height <= 0:
+                part = 0
+            else:
+                part = remaining_height * w // remaining_weight
+            child_heights.append(part)
+            remaining_height -= part
+            remaining_weight -= w
 
         rendered_blocks = []
-        for child in self.children:
-            child_ctx = RenderContext(ctx.width, child_height)
+        for child, height in zip(self.children, child_heights):
+            child_ctx = RenderContext(ctx.width, max(height, 0))
             output = child.render(child_ctx)
             rendered_blocks.append(output.splitlines())
 
