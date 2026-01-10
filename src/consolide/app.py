@@ -6,6 +6,7 @@ This module contains the application loop for Consolide.
 """
 
 import time
+from collections.abc import Callable
 
 from consolide.component import ConsolideComponent
 from consolide.exceptions import ConsolideError
@@ -21,9 +22,20 @@ class ConsolideApp:
     root : ConsolideComponent
         The root component of the application.
     """
-    def __init__(self, root: type[ConsolideComponent]) -> None:
+    def __init__(
+        self,
+        root: Callable[..., ConsolideComponent],
+        *,
+        root_kwargs: dict | None = None,
+    ) -> None:
+        """Initialize the application with a root component factory.
+
+        The ``root`` argument can be either a component class or any callable
+        that, when called as ``root(terminal, **root_kwargs)``, returns a
+        ``ConsolideComponent`` instance.
+        """
         self.terminal = Terminal()
-        self.root = root(self.terminal)
+        self.root = root(self.terminal, **(root_kwargs or {}))
         self.running: bool = False
         self.__dirty: bool = True
         if hasattr(self.root, "terminal"):
