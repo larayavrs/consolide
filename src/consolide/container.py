@@ -7,10 +7,10 @@ A container that groups multiple components.
 
 from typing import Iterable, List
 
-from consolide.component import ConsolideComponent
+from consolide.component import ConsolideComponent, MultiChildComponent
 from consolide.rendering import RenderContext
 
-class Container(ConsolideComponent):
+class Container(MultiChildComponent):
     """
     A component that renders its children sequentially.
 
@@ -25,8 +25,7 @@ class Container(ConsolideComponent):
         terminal,
         children: Iterable[ConsolideComponent] | None = None
     ) -> None:
-        super().__init__(terminal)
-        self.children: List[ConsolideComponent] = list(children or [])
+        super().__init__(terminal, children)
     
     def add(self, component: ConsolideComponent) -> None:
         """

@@ -1,10 +1,9 @@
-from consolide.component import ConsolideComponent
+from consolide.component import ConsolideComponent, SingleChildComponent
 from consolide.rendering import RenderContext
 
-class Box(ConsolideComponent):
+class Box(SingleChildComponent):
     def __init__(self, terminal, child: ConsolideComponent, title: str | None = None):
-        super().__init__(terminal)
-        self.child = child
+        super().__init__(terminal, child)
         self.title = title
     
     def render(self, ctx: RenderContext) -> str:
@@ -28,7 +27,7 @@ class Box(ConsolideComponent):
         return "\n".join(lines)
     
     def update(self) -> None:
-        self.child.update()
+        self._update_child()
 
     def destroy(self) -> None:
-        self.child.destroy()
+        self._destroy_child()

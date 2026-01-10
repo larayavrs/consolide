@@ -7,10 +7,10 @@ This module contains the row, a component that groups multiple components horizo
 
 from typing import Iterable
 
-from consolide.component import ConsolideComponent
+from consolide.component import ConsolideComponent, MultiChildComponent
 from consolide.rendering import RenderContext
 
-class Row(ConsolideComponent):
+class Row(MultiChildComponent):
     """
     A component that groups multiple components horizontally.
 
@@ -24,8 +24,7 @@ class Row(ConsolideComponent):
         The gap between the children
     """
     def __init__(self, terminal, children: Iterable[ConsolideComponent] | None = None, gap: int = 1):
-        super().__init__(terminal)
-        self.children = list(children or [])
+        super().__init__(terminal, children)
         self.gap = gap
 
     def render(self, ctx: RenderContext) -> str:
