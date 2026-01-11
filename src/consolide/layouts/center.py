@@ -8,7 +8,7 @@ vertically within the available area.
 
 from consolide.component import ConsolideComponent, SingleChildComponent
 from consolide.rendering import RenderContext
-from consolide.align import Align
+from consolide.layouts.align import Align
 
 
 class Center(SingleChildComponent):
@@ -24,7 +24,7 @@ class Center(SingleChildComponent):
     def render(self, ctx: RenderContext) -> str:
         if self.child is None:
             return ""
-        # Delegate the actual centering math to Align.
+        # delegate the actual centering math to Align.
         aligned = Align(
             self.terminal,
             self.child,
