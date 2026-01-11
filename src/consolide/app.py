@@ -80,6 +80,10 @@ class ConsolideApp:
             raise ConsolideError(
                 f"{self.root.__class__.__name__}.render() must return str"
             )
+        # always reset ANSI attributes at the very end of the frame to avoid
+        # leaking colors/styles into subsequent terminal output.
+        if not output.endswith("\x1b[0m"):
+            output = f"{output}\x1b[0m"
         self.terminal.clear()
         self.terminal.write(output)
 

@@ -19,6 +19,8 @@ class Terminal:
             raise ConsolideUncompatibleTerminal(
                 "The terminal is not compatible with Consolide. Standard output is not a TTY"
             )
+        # enable ANSI escape sequences where needed (e.g. Windows).
+        self._enable_ansi()
     
     def _enable_ansi(self) -> None:
         """Enables ANSI escape sequences on Windows terminals"""
